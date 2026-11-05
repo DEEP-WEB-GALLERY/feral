@@ -7,157 +7,272 @@
 <title>FERAL Machine</title>
 <meta name="description" content="FERAL · CYCLE01 — brief general v0.2. Una operación meta-editorial.">
 <style>
-/* layout: one narrow terminal document, ~72ch, amber phosphor on black (cicfa.lol register). diagrams scale to fit. */
+/* layout: FERAL.NFO — a scene release file open in a text editor. one 80-col column, logo bleeds full width,
+   inverted amber bars for labels, menubar on top and emacs modeline at the bottom. amber phosphor on black. */
 :root{
   color-scheme: dark;
   --bg:#000;
   --amber:#ffb000;
-  --amber-hi:#ffd27a;
-  --amber-dim:#b47c00;
-  --amber-faint:#3d2a00;
-  --glow:rgba(255,176,0,.22);
+  --hi:#ffd27a;
+  --dim:#a87300;
+  --faint:#3a2800;
+  --ink:#000;
+  --glow:rgba(255,176,0,.28);
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-  --fs:14px;
+  --bar: 26px;
 }
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--amber);font:var(--fs)/1.7 var(--mono);letter-spacing:.01em;
+html{scroll-padding-top:calc(var(--bar) + 12px)}
+body{background:var(--bg);color:var(--amber);font:14px/1.7 var(--mono);letter-spacing:.01em;margin:0;
   padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));
-  padding-block:0 64px;-webkit-font-smoothing:antialiased}
-::selection{background:var(--amber);color:var(--bg)}
-a{color:var(--amber);text-decoration:underline;text-decoration-color:var(--amber-dim);text-underline-offset:3px}
-a:hover{text-decoration-color:var(--amber)}
+  padding-block:0 calc(var(--bar) + 48px);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top, 0px);z-index:10;background:var(--amber)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:9;
+  background:repeating-linear-gradient(to bottom, rgba(0,0,0,0) 0 2px, rgba(0,0,0,.22) 2px 3px)}
+::selection{background:var(--amber);color:var(--ink)}
+a{color:var(--amber)}
 a:focus-visible{outline:1px solid var(--amber);outline-offset:2px}
-b{color:var(--amber-hi);font-weight:600}
-i{font-style:italic}
-.dim{color:var(--amber-dim)}
-.top,main,.eof{max-width:74ch;margin-inline:auto}
-.top{display:flex;align-items:center;gap:10px;padding-block:18px;border-bottom:1px solid var(--amber-faint);
-  font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-dim)}
-.top .r{margin-left:auto}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--amber);box-shadow:0 0 8px var(--glow);animation:pulse 2.4s ease-in-out infinite}
-@keyframes pulse{50%{opacity:.35}}
-main{display:flex;flex-direction:column;gap:56px;padding-top:40px}
-section{display:flex;flex-direction:column;gap:18px;min-width:0}
-p{margin:0;max-width:68ch}
-.lead{font-size:15px;color:var(--amber-hi)}
-h2{margin:0;padding-top:20px;border-top:1px dashed var(--amber-faint);font-size:13px;font-weight:600;letter-spacing:.22em;color:var(--amber);text-shadow:0 0 10px var(--glow)}
-h2 .n{color:var(--amber-dim)}
-.k{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber-dim);margin-bottom:6px}
-.scroll{overflow-x:auto;min-width:0}
+b{color:var(--hi);font-weight:700}
+p{margin:0;max-width:72ch}
+
+.menubar,.modeline{display:flex;gap:18px;align-items:center;background:var(--amber);color:var(--ink);
+  font-size:12.5px;height:var(--bar);white-space:nowrap;overflow:hidden;z-index:8;
+  margin-inline:calc(-1 * max(16px, env(safe-area-inset-left, 0px))) calc(-1 * max(16px, env(safe-area-inset-right, 0px)));
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.menubar{position:sticky;top:env(safe-area-inset-top, 0px)}
+.menubar .fn{margin-left:auto;font-weight:700;letter-spacing:.08em}
+.modeline{position:fixed;left:0;right:0;bottom:0;margin:0;gap:14px;height:calc(var(--bar) + env(safe-area-inset-bottom, 0px));
+  padding-bottom:env(safe-area-inset-bottom, 0px)}
+.modeline b{font-weight:700;color:var(--ink)}
+.modeline .fill{flex:1;height:1px;border-top:1px dashed var(--ink);opacity:.6}
+
+.nfo{max-width:80ch;margin-inline:auto;display:flex;flex-direction:column;gap:28px;padding-top:44px}
+section{display:flex;flex-direction:column;gap:20px;min-width:0}
 pre{margin:0;font-family:var(--mono)}
-pre.d{font-size:min(13px, calc((100vw - 32px) / (var(--cols) * 0.62)));line-height:1.28;color:var(--amber);text-shadow:0 0 6px var(--glow);white-space:pre}
-pre.mark{font-size:min(22px, calc((100vw - 32px) / (var(--cols) * 0.62)));line-height:1.1;color:var(--amber-hi);text-shadow:0 0 12px var(--glow)}
-pre.block{font-size:12.5px;line-height:1.6;color:var(--amber-dim);border-left:1px solid var(--amber-faint);padding:4px 0 4px 14px;white-space:pre}
-.hero{gap:22px}
-.fig{margin:6px 0;display:flex;flex-direction:column;gap:10px}
-figcaption{font-size:11.5px;letter-spacing:.12em;color:var(--amber-dim)}
-.callout{border:1px solid var(--amber-faint);padding:14px 16px}
-.callout p{color:var(--amber-hi)}
-.toc{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;letter-spacing:.06em}
-.toc a{color:var(--amber-dim);text-decoration:none}
-.toc a:hover,.toc a:focus-visible{color:var(--amber)}
-dl{margin:0;display:flex;flex-direction:column;gap:16px}
-dl>div{display:grid;grid-template-columns:17ch 1fr;gap:4px 18px}
-dt{text-transform:uppercase;letter-spacing:.12em;font-size:12.5px;color:var(--amber-hi)}
-dd{margin:0;min-width:0;display:flex;flex-direction:column;gap:2px}
-.fails .q{color:var(--amber-dim)}
-.vert dd{display:block}
-table{border-collapse:collapse;width:100%;font-size:13px;min-width:46ch}
-th{text-align:left;font-weight:400;font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber-dim);padding:0 14px 8px 0;border-bottom:1px solid var(--amber-faint)}
-td{vertical-align:top;padding:8px 14px 8px 0;border-bottom:1px dashed var(--amber-faint)}
-td:first-child{color:var(--amber-hi);white-space:nowrap}
-ul.mk,ol.open{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
-ul.mk li{display:grid;grid-template-columns:4ch 1fr;gap:8px}
-ol.open{counter-reset:q}
-ol.open li{counter-increment:q;display:grid;grid-template-columns:4ch 1fr;gap:8px}
-ol.open li::before{content:counter(q, decimal-leading-zero);color:var(--amber-dim)}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.cols>div{min-width:0;display:flex;flex-direction:column;gap:8px}
-.big{font-size:17px;color:var(--amber-hi);text-shadow:0 0 10px var(--glow)}
-.ask li{font-size:15px}
-.eof{margin-top:64px;padding-top:18px;border-top:1px solid var(--amber-faint);font-size:12px;letter-spacing:.2em;color:var(--amber-dim)}
+pre.art{white-space:pre;line-height:1.25;color:var(--amber);text-shadow:0 0 6px var(--glow);
+  font-size:min(13.5px, calc((100vw - 32px) / (var(--cols) * 0.605)));overflow-x:auto;max-width:100%}
+pre.n{display:none}
+
+.pres{text-align:center;letter-spacing:.3em;text-transform:uppercase;font-size:12px;color:var(--dim);max-width:none}
+.bleed{width:100vw;margin-left:calc(50% - 50vw);display:flex;justify-content:center;padding-inline:16px}
+pre.logo{font-size:min(16px, calc((100vw - 32px) / (var(--cols) * 0.605)));line-height:1.08;color:var(--hi);
+  text-shadow:0 0 14px var(--glow), 0 0 2px var(--amber);overflow:visible}
+.sig{display:flex;justify-content:space-between;font-size:12px;letter-spacing:.4em;color:var(--dim);
+  border-top:1px solid var(--faint);padding-top:8px}
+.spaced{text-align:center;font-size:13px;color:var(--amber);max-width:none;white-space:nowrap;overflow:hidden;text-overflow:clip}
+
+.toc{display:grid;grid-template-columns:repeat(3, minmax(0,1fr));gap:2px 18px;font-size:12.5px}
+.toc a{text-decoration:none;color:var(--dim);padding:2px 0}
+.toc a span{color:var(--amber)}
+.toc a:hover,.toc a:focus-visible{color:var(--ink);background:var(--amber)}
+.toc a:hover span,.toc a:focus-visible span{color:var(--ink)}
+
+.sep{opacity:.7}
+.sh{display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:end;padding-top:8px}
+pre.num{font-size:min(9px, calc((100vw - 32px) / (var(--cols) * 0.605 * 1.6)));line-height:1;color:var(--hi);overflow:visible}
+.st{display:flex;flex-direction:column;gap:4px;min-width:0}
+.inv{background:var(--amber);color:var(--ink);padding:0 .5ch;font-weight:700;letter-spacing:.12em;width:fit-content;text-shadow:none}
+.st .inv{font-size:clamp(16px, 2.2vw, 22px);padding:2px .6ch}
+.sub{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+.tilde{color:var(--dim);letter-spacing:.12em;overflow:hidden;white-space:nowrap}
+
+.hyp{border:1px solid var(--amber);padding:16px 18px 18px;display:flex;flex-direction:column;gap:10px;box-shadow:0 0 18px rgba(255,176,0,.12) inset}
+.hyp p{color:var(--hi);font-size:15px}
+
+figure{margin:6px 0;display:flex;flex-direction:column;gap:10px;min-width:0}
+figcaption{font-size:11.5px;letter-spacing:.14em;color:var(--dim)}
+pre.code{color:var(--dim);text-shadow:none;border-left:2px solid var(--faint);padding-left:14px;font-size:min(12.5px, calc((100vw - 48px) / (var(--cols) * 0.605)))}
+
+.issues{display:grid;grid-template-columns:1fr 1fr;gap:20px 28px}
+.issue{display:flex;flex-direction:column;gap:6px;min-width:0;border-top:1px dashed var(--faint);padding-top:10px}
+.bug{font-size:13px;color:var(--hi);text-transform:uppercase;letter-spacing:.08em}
+.sym{color:var(--dim)}
+.fix .lab{color:var(--ink);background:var(--amber);padding:0 .4ch;font-weight:700}
+
+.nds{display:flex;flex-direction:column;gap:14px}
+.nd{display:grid;grid-template-columns:8ch 16ch 1fr;gap:4px 14px;align-items:baseline}
+.nn{color:var(--dim);font-size:12px}
+.nt{color:var(--hi);letter-spacing:.1em;font-size:13px}
+.nd p{min-width:0}
+
+.k{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+ol.meas{margin:0;padding:0;list-style:none;counter-reset:m;display:flex;flex-direction:column;gap:8px}
+ol.meas li{counter-increment:m;position:relative;padding-left:6ch;max-width:72ch}
+ol.meas li::before{content:"[" counter(m, decimal-leading-zero) "]";color:var(--dim);position:absolute;left:0}
+
+.end{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;padding-top:12px}
+pre.endcage{opacity:.8}
+.opt{font-size:16px;color:var(--hi);text-shadow:0 0 10px var(--glow);max-width:52ch}
+.cr{font-size:12px;letter-spacing:.24em;color:var(--dim);max-width:none}
+.eof{font-size:12px;letter-spacing:.3em;color:var(--dim)}
 .cur{display:inline-block;width:.6em;height:1.1em;margin-left:8px;vertical-align:-.2em;background:var(--amber);animation:blink 1.1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
-@media (max-width:640px){
-  dl>div{grid-template-columns:1fr}
-  .cols{grid-template-columns:1fr}
-  .top .r{display:none}
+
+
+.bleedx{width:100vw;margin-left:calc(50% - 50vw);overflow:hidden;display:flex;justify-content:center}
+pre.sepp{font-size:13px;color:var(--dim);white-space:pre;line-height:1}
+.ticker{background:var(--amber);color:var(--ink);font-weight:700;font-size:13px;letter-spacing:.14em;white-space:nowrap;padding:6px 0;justify-content:flex-start}
+.ticker span{padding-left:16px}
+.hyp p{font-size:clamp(18px, 2.3vw, 25px);line-height:1.4;letter-spacing:0}
+pre.date{font-size:min(15px, calc((100vw - 32px) / (var(--cols) * 0.605)));line-height:1.05;color:var(--hi);text-shadow:0 0 12px var(--glow);overflow:visible}
+.datecap{text-align:center;max-width:none;letter-spacing:.4em;text-transform:uppercase;font-size:12px;color:var(--dim);margin-top:-12px}
+@media (max-width:700px){
+  pre.w{display:none} pre.n{display:block}
+  .issues{grid-template-columns:1fr}
+  .nd{grid-template-columns:1fr}
+  .toc{grid-template-columns:1fr 1fr}
+  .menubar span:nth-child(n+4):not(.fn){display:none}
+  .modeline span:nth-child(-n+2){display:none}
+  .spaced{font-size:10.5px}
 }
-@media (prefers-reduced-motion:reduce){.dot,.cur{animation:none}}
+@media (prefers-reduced-motion:reduce){.cur{animation:none}}
 </style>
 </head>
 <body>
-<header class="top">
-  <span class="dot" aria-hidden="true"></span><span>FERAL // CYCLE01 // BRIEF v0.2</span>
-  <span class="r">CLEARANCE: RESTRICTED</span>
-</header>
+<div class="menubar" role="presentation"><span>File</span><span>Edit</span><span>Options</span><span>Buffers</span><span>Tools</span><span>Help</span><span class="fn">FERAL.NFO</span></div>
 
-<main>
-<section class="hero">
-  <figure class="fig"><div class="scroll"><pre class="d mark" style="--cols:34" aria-label="wordmark"> _____ _____ ____      _    _
-|  ___| ____|  _ \    / \  | |
-| |_  |  _| | |_) |  / _ \ | |
-|  _| | |___|  _ &lt;  / ___ \| |___
-|_|   |_____|_| \_\/_/   \_\_____|</pre></div></figure>
-  <div class="scroll"><pre class="block">FILE        brief general
-PROGRAM     FERAL · CYCLE01
-TYPE        cultural / operational / speculative
-CLEARANCE   restricted
-STATUS      draft
-VERSION     v0.2
-UPDATED     2026-11-04
-MAINTAINED  @mnrr · @boris</pre></div>
-  <p class="lead">FERAL es una operación meta-editorial: un dispositivo humano y no humano que recibe capital de distintos tipos y lo convierte en publicaciones, sonido, objetos, software, exhibiciones y discusiones. Lo que produce vuelve a entrar al sistema como materia prima.</p>
-  <nav class="toc" aria-label="índice"><a href="#s00">00&nbsp;brief</a> <a href="#s01">01&nbsp;superficie</a> <a href="#s02">02&nbsp;la maquina</a> <a href="#s03">03&nbsp;roles</a> <a href="#s04">04&nbsp;verticales</a> <a href="#s05">05&nbsp;criterio</a> <a href="#s06">06&nbsp;raise-cycle</a> <a href="#s07">07&nbsp;cycle01</a> <a href="#s08">08&nbsp;capa no humana</a></nav>
-</section>
+<main class="nfo">
+<p class="pres">FERAL Machine proudly presents:</p>
+<div class="bleed"><pre class="art logo" style="--cols:149" aria-label="FERAL">               ..       :::        ::::                        :::::::::::.,:::,      ::::::              ;lllj             ::   :::
+         .;jl$$$$$$$$$$$$$$$$$b:  ;!!!!lllllll!j!I$$$I,   !$$$$$$$$$$$$$$$$$$$$$$!.                      I$$$$$l             i!!!!!!!!!!!!!i.
+      :!$$$$$$$$$$$$$$$$$$$$$$$j  !$$$$$$$$$$$$$$$$$$$l   l$$$$$$$$$$$$$$$$$$$$$$$$;                    ;$$$$$$$:           !$$$$$$$$$$$$$$$i
+    j$$$$$$$$$$$$$$$$!iii!$$$$$i:  iijl$$$$$$$!!l$$$$$$!   :,,,:!$$$$$$$$$$$$$$$$$$$I                   $$$$$$$$:           ,l$$$$$$$$$$Il!;::
+  :d$$$$$$$j:::I$$$$$.:::::.;jj::   ::.$$$$$$:::::::!$$P:        $$$$$$i::::.,$$$$$$$l                 ;$$$$$$$$l             :$$$$$$$,:::::
+ !$$$$$!;::::  :$$$$$.        ::      .$$$$$j:       :,.:        $$$$$$::     ;$$$$$$$:               ,$$$$I$$$$$;             l$$$$$$:
+l$$$$$;::      ;$$$$$.    :i;         .$$$$$j:                   $$$$$$:       $$$$$$I:               d$$$$:I$$$$j             i$$$$$$:
+$$$$$I:        l$$$$$ljjjI$$b         :$$$$$!:   ,jl;           .$$$$$$:      !$$$$$P.:              !$$$$!:j$$$$$,            l$$$$$j:
+$$$$$::        l$$$$$$$$$$$$l:        i$$$$$$$$$$$$$$.          .$$$$$$$ljl$$$$$$$$P.:              j$$$$$$$$$$$$$b            I$$$$$.:
+$$$$P,         l$$$$$liij$$$$:        !$$$$$$$$$$$$$$.          .$$$$$$$$$$$$$$$$$:::              !$$$$$$$$$$$$$$$,           $$$$$$:
+Y$$I::         j$$$$$.:::.l$!:        !$$$$$i:::,ill!:          .$$$$$$$i!$$$$$$$$:               j$$$$$l!jjj$$$$$$i           $$$$$$:
+:::::          l$$$$$:     :::        !$$$$$::    ::::          .$$$$$$i:::I$$$$$$I              j$$$$$P::::::$$$$$$:         .$$$$$$:          ,!$l.
+               ;$$$$$:                :$$$$$j         ,.        .$$$$$$l:   l$$$$$$b;           i$$$$$P,:     j$$$$$;         .$$$$$$:       ,i$$$$P:
+               :$$$$$;                ;$$$$$$;::::il$$$$i       .$$$$$$$:    ;$$$$$$$b:       .j$$$$$$;:       $$$$$$:        i$$$$$$Iiiiiil$$$$$$P,:
+      .ij!!!!!$$$$$$$$I!i;:.     ,;jl$$$$$$$$$$$$$$$$$$;:: ,:,.:!$$$$$$$l;.   :;$$$$$$$$i:.jI$$$$$$$$$$!    ,il$$$$$$$$$$$!l$$$$$$$$$$$$$$$$$$$$$P,:
+      j$$$$$$$$$$$$$$$$$$$$b    .d$$$$$$$$$$$$$$$$$$$P.:: i$$$$$$$$$$$$$$$$$j   :,j$$$$$$$$$$$$$$$$$$$$P,  j$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$l.:
+       :,,,,::.,,,,,,,;ii;:::    ,iji;:::::.:::::.,::::    :,;;iiiiiiiij!llli:     ::ij!!!j,,::,.::::.:::   ::::::::::::::.ii:,:;i;:.::........:::</pre></div>
+<div class="sig"><span>CYCLE01</span><span>&lt;mnrr+boris&gt;</span></div>
+<p class="spaced" aria-label="operación meta-editorial">o p e r a c i o n &nbsp; m e t a - e d i t o r i a l</p>
+<div class="ticker bleedx" aria-hidden="true"><span>FERAL // CYCLE01 // 31.12.2026 -&gt; 31.12.2027 // MEMBERS 05-12 // EVERYTHING IS OPTIONAL // OWNING THE META // FERAL // CYCLE01 // 31.12.2026 -&gt; 31.12.2027 // MEMBERS 05-12 // EVERYTHING IS OPTIONAL // OWNING THE META // FERAL // CYCLE01 // 31.12.2026 -&gt; 31.12.2027 // MEMBERS 05-12 // EVERYTHING IS OPTIONAL // OWNING THE META // FERAL // CYCLE01 // 31.12.2026 -&gt; 31.12.2027 // MEMBERS 05-12 // EVERYTHING IS OPTIONAL // OWNING THE META</span></div>
 
-<section>
-<h2 id="s00"><span class="n">&sect;00</span> // BRIEF</h2>
-<p><b>CYCLE01</b> es su primera operación: <b>31 dic 2026 &rarr; 31 dic 2027</b>. CYCLE01 no agota a FERAL. Al cierre del ciclo se audita lo hecho y se define el siguiente.</p>
-<div class="callout">
-  <div class="k">HIPÓTESIS</div>
-  <p>Una estructura con recursos finitos, reglas explícitas y riesgo propio puede producir resultados que esa misma estructura no podía predecir. La máquina es el instrumento. Lo que sale, y lo que se rompe en el camino, es el dato.</p>
-</div>
-<figure class="fig"><div class="scroll"><pre class="d" style="--cols:54" aria-label="fig.00a // feral: lo que fue domesticado y se escapó"> | | | | | | | | |
+<pre class="art w" style="--cols:76" aria-label="release information">+-[ RELEASE INFORMATION ]--------------------------------------------------+
+| File Name   [ feral-cycle01.nfo ]                                        |
+| Title       [ FERAL / CYCLE01 ]                                          |
+| Released    [ 31.12.2026 ]                                               |
+| Runs Until  [ 31.12.2027 ]                                               |
+| Author(s)   [ @mnrr + @boris ]                                           |
+| Packaged By [ FERAL Machine ]                                            |
+| Type        [ cultural / operational / speculative ]                     |
+| Clearance   [ restricted ]                                               |
+| Status      [ draft v0.2 / 2026-11-04 ]                                  |
+|--------------------------------------------------------------------------|
+| Description                                                              |
+| FERAL es una operacion meta-editorial: un dispositivo humano y no humano |
+| que recibe capital de distintos tipos y lo convierte en publicaciones,   |
+| sonido, objetos, software, exhibiciones y discusiones. Lo que produce    |
+| vuelve a entrar al sistema como materia prima.                           |
+|--------------------------------------------------------------------------|
+| Output   [x] publicaciones  [x] sonido  [x] objetos  [x] software  [x]   |
+| exhibiciones  [x] discusiones                                            |
++--------------------------------------------------------------------------+</pre><pre class="art n" style="--cols:44" aria-label="release information">+-[ RELEASE INFO ]-------------------------+
+| File Name   [ feral-cycle01.nfo ]        |
+| Title       [ FERAL / CYCLE01 ]          |
+| Released    [ 31.12.2026 ]               |
+| Runs Until  [ 31.12.2027 ]               |
+| Author(s)   [ @mnrr + @boris ]           |
+| Packaged By [ FERAL Machine ]            |
+| Type        [ cultural / operational / ] |
+|               speculative                |
+| Clearance   [ restricted ]               |
+| Status      [ draft v0.2 / 2026-11-04 ]  |
+|------------------------------------------|
+| Description                              |
+| FERAL es una operacion meta-editorial:   |
+| un dispositivo humano y no humano que    |
+| recibe capital de distintos tipos y lo   |
+| convierte en publicaciones, sonido,      |
+| objetos, software, exhibiciones y        |
+| discusiones. Lo que produce vuelve a     |
+| entrar al sistema como materia prima.    |
+|------------------------------------------|
+| Output   [x] publicaciones  [x] sonido   |
+| [x] objetos  [x] software  [x]           |
+| exhibiciones  [x] discusiones            |
++------------------------------------------+</pre>
+
+<nav class="toc" aria-label="índice"><a href="#s00"><span>00</span> release notes</a><a href="#s01"><span>01</span> known issues</a><a href="#s02"><span>02</span> system architecture</a><a href="#s03"><span>03</span> crew</a><a href="#s04"><span>04</span> nodes</a><a href="#s05"><span>05</span> requirements</a><a href="#s06"><span>06</span> install notes</a><a href="#s07"><span>07</span> release schedule</a><a href="#s08"><span>08</span> tech notes</a></nav>
+
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s00"><pre class="art num" style="--cols:28" aria-label="00">   :;iii;.       ,;iii;,
+ !$$$$$$$$$;   ;$$$$$$$$$j
+!$$$$!.$$$$$, ,$$$$$.!$$$$!
+$$$$$;:$$$$$i i$$$$I:;$$$$$:
+$$$$$;:$$$$$j:j$$$$I:;$$$$$:
+$$$$$;:$$$$$j:j$$$$I:;$$$$$:
+$$$$$;:$$$$$j:j$$$$I:;$$$$$:
+$$$$$;:$$$$$j:j$$$$I:;$$$$$:
+$$$$$;:$$$$$i:j$$$$I:;$$$$$:
+!$$$$!.$$$$$:::$$$$$.!$$$$!:
+ !$$$$$$$$$;:  ;$$$$$$$$$!::
+  ::;iii;,:::   :,;iiii::::</pre><div class="st"><span class="inv">[ RELEASE NOTES ]</span><span class="sub">&sect;00 // brief</span><span class="tilde" aria-hidden="true">~~~~~~~~~~~~~~~~~</span></div></header>
+<p><b>CYCLE01</b> es la primera operación de FERAL: <b>31 dic 2026 &rarr; 31 dic 2027</b>. CYCLE01 no agota a FERAL. Al cierre del ciclo se audita lo hecho y se define el siguiente.</p>
+<div class="hyp"><span class="inv">HIPÓTESIS</span><p>Una estructura con recursos finitos, reglas explícitas y riesgo propio puede producir resultados que esa misma estructura no podía predecir. La máquina es el instrumento. Lo que sale, y lo que se rompe en el camino, es el dato.</p></div>
+<figure><pre class="art " style="--cols:54" aria-label="fig.00a // feral: lo que fue domesticado y se escapó"> | | | | | | | | |
  | | | | | | | | |
  | | | | | | |  \ \
  | | | | | | |   \ \  .   .   .   .   .   .   .   .  &gt;
  | | | | | | |   / /
  | | | | | | |  / /
  | | | | | | | | |
- | | | | | | | | |</pre></div><figcaption>fig.00a // feral: lo que fue domesticado y se escapó</figcaption></figure>
+ | | | | | | | | |</pre><figcaption>fig.00a // feral: lo que fue domesticado y se escapó</figcaption></figure>
 <p>Ni cautivo ni salvaje de origen. Fuera de la domesticación institucional, sin necesidad de renegar de las instituciones.</p>
-<figure class="fig"><div class="scroll"><pre class="d" style="--cols:60" aria-label="fig.00b // dónde queda feral">CAUTIVO                    FERAL                    SALVAJE
+<figure><pre class="art " style="--cols:60" aria-label="fig.00b // dónde queda feral">CAUTIVO                    FERAL                    SALVAJE
   +--------------------------+--------------------------+
 domesticado          fue domesticado            nunca lo fue
                        y se escapo
                              ^
             fuera de la domesticacion institucional,
-                sin renegar de las instituciones</pre></div><figcaption>fig.00b // dónde queda feral</figcaption></figure>
-<p>El sistema combina variables predecibles (tiempo, plata, reglas) y variables caóticas (personas, encuentros, lo que una obra dispara). Es estocástico, no determinista.</p>
+                sin renegar de las instituciones</pre><figcaption>fig.00b // dónde queda feral</figcaption></figure>
+<p>El sistema combina variables predecibles (tiempo, plata, reglas) y variables caóticas (personas, encuentros, lo que una obra dispara). <b>Es estocástico, no determinista.</b></p>
 </section>
 
-<section>
-<h2 id="s01"><span class="n">&sect;01</span> // SUPERFICIE</h2>
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s01"><pre class="art num" style="--cols:24" aria-label="01">   ,;iii;,         .:::
+ !$$$$$$$$$i     :l$$$b
+!$$$$!.$$$$$i l$$$$$$$$:
+$$$$$i:!$$$$l:!!l$$$$$$:
+$$$$$i:!$$$$I: ::i$$$$$:
+$$$$$i:!$$$$I:   ;$$$$$:
+$$$$$i:!$$$$I:   ;$$$$$:
+$$$$$i:!$$$$I:   ;$$$$$:
+$$$$$i:!$$$$l:   ;$$$$$:
+!$$$$!.$$$$$j:   ;$$$$$:
+ !$$$$$$$$$j::   ;$$$$P:
+  ::;iii;::::    .::::::</pre><div class="st"><span class="inv">[ KNOWN ISSUES ]</span><span class="sub">&sect;01 // superficie</span><span class="tilde" aria-hidden="true">~~~~~~~~~~~~~~~~</span></div></header>
 <p>Cuatro fallas conocidas de la producción cultural. FERAL se diseña contra ellas.</p>
-<dl class="fails">
-  <div><dt>01 la mafia del amor</dt><dd><span class="q">En la autogestión, el afecto termina gobernando. Las decisiones quedan implícitas y a los tres años hay camarilla.</span><span class="a">&rarr; Aportes, decisiones y responsables legibles. La discusión parte de información compartida.</span></dd></div>
-  <div><dt>02 el logo en el flyer</dt><dd><span class="q">El financiador externo trae condiciones. La agenda pasa a responderle a la plata.</span><span class="a">&rarr; Los founders capitalizan primero. El capital externo entra sin gobernanza.</span></dd></div>
-  <div><dt>03 la potencia infinita</dt><dd><span class="q">Toda idea es un proyecto posible y nada se materializa.</span><span class="a">&rarr; Presupuesto antes que plan. Sin responsable y recursos, un proyecto no existe.</span></dd></div>
-  <div><dt>04 tech-bro / anti-tech</dt><dd><span class="q">La conversación sobre tecnología queda atrapada entre el solucionismo y un rechazo que se publica por Instagram.</span><span class="a">&rarr; La tecnología como objeto de estudio y como método de organización, leída desde la antropología, el arte, la investigación y las letras. No nos hacemos los ingenieros.</span></dd></div>
-</dl>
-<p>Parte del gesto está en la metodología de gestión. Una obra puede terminar siendo una remera o una roca en un museo: el sistema que la hizo posible también es lo que se está presentando. <i>Owning the meta.</i></p>
-<div class="scroll"><pre class="block">assert structure               != predictability
+<div class="issues"><div class="issue"><div class="bug"><span class="inv">ISSUE #01</span> la mafia del amor</div><p class="sym">En la autogestión, el afecto termina gobernando. Las decisiones quedan implícitas y a los tres años hay camarilla.</p><p class="fix"><span class="lab">FIX:</span> Aportes, decisiones y responsables legibles. La discusión parte de información compartida.</p></div><div class="issue"><div class="bug"><span class="inv">ISSUE #02</span> el logo en el flyer</div><p class="sym">El financiador externo trae condiciones. La agenda pasa a responderle a la plata.</p><p class="fix"><span class="lab">FIX:</span> Los founders capitalizan primero. El capital externo entra sin gobernanza.</p></div><div class="issue"><div class="bug"><span class="inv">ISSUE #03</span> la potencia infinita</div><p class="sym">Toda idea es un proyecto posible y nada se materializa.</p><p class="fix"><span class="lab">FIX:</span> Marco primero: presupuesto antes que plan. Sin responsable y recursos, un proyecto no existe.</p></div><div class="issue"><div class="bug"><span class="inv">ISSUE #04</span> tech-bro / anti-tech</div><p class="sym">La conversación cultural sobre tecnología queda atrapada entre el solucionismo y un rechazo que se publica por Instagram.</p><p class="fix"><span class="lab">FIX:</span> La tecnología como objeto de estudio y como método de organización, leída desde la antropología, el arte, la investigación y las letras. No nos hacemos los ingenieros.</p></div></div>
+<p>Parte del gesto está en la metodología de gestión. Una obra puede terminar siendo una remera o una roca en un museo: el sistema que la hizo posible también es lo que se está presentando. <b>Owning the meta.</b></p>
+<pre class="art code" style="--cols:54" aria-label="asserts">assert structure               != predictability
 assert capital                 != curatorial_authority
 assert plan                    &lt;= budget
 assert continuity              != objective
 assert work_is_about_violence  != work_is_violent
-assert stages_symbolic_systems != real_world_harm</pre></div>
+assert stages_symbolic_systems != real_world_harm</pre>
 </section>
 
-<section>
-<h2 id="s02"><span class="n">&sect;02</span> // LA MAQUINA</h2>
-<figure class="fig"><div class="scroll"><pre class="d" style="--cols:59" aria-label="fig.02 // la máquina es un circuito, no un embudo">  COMITE ASESOR    COMITE EJECUTIVO   SUPPORTER / METAL
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s02"><pre class="art num" style="--cols:28" aria-label="02">   ,;iii;,       ,;iii;,
+ !$$$$$$$$$j   ;$$$$$$$$$j
+!$$$$l.l$$$$! :$$$$!.i$$$$l
+$$$$$j:j$$$$$:j$$$$;:;$$$$$:
+$$$$$j:j$$$$$:,;;;;.,$$$$$i:
+$$$$$j:j$$$$$:     :d$$$$!::
+$$$$$j:j$$$$$:    i$$$$$i::
+$$$$$j:j$$$$$:   !$$$$P:::
+$$$$$j:j$$$$$: .d$$$$l::
+!$$$$l.l$$$$!:,d$$$$$jjjjj,
+ !$$$$$$$$$!::j$$$$$$$$$$$;
+  ::;iii;:::: .:::::::::::.:</pre><div class="st"><span class="inv">[ SYSTEM ARCHITECTURE ]</span><span class="sub">&sect;02 // la máquina</span><span class="tilde" aria-hidden="true">~~~~~~~~~~~~~~~~~~~~~~~</span></div></header>
+<figure><pre class="art " style="--cols:59" aria-label="fig.02 // la máquina es un circuito, no un embudo">  COMITE ASESOR    COMITE EJECUTIVO   SUPPORTER / METAL
   credenciales      $ + gobernanza      $ voluntario
         |                  |                  |
         +------------------+------------------+
@@ -176,99 +291,265 @@ assert stages_symbolic_systems != real_world_harm</pre></div>
      +------------+-------------+        |        |       |
                   v                      |        |       |
             MATERIA PRIMA ---------------+--------+-------+
-      long-form y arte vuelven como insumo</pre></div><figcaption>fig.02 // la máquina es un circuito, no un embudo</figcaption></figure>
+      long-form y arte vuelven como insumo</pre><figcaption>fig.02 // la máquina es un circuito, no un embudo</figcaption></figure>
 <p>El dinero es un tipo de capital entre varios. Todos se registran igual: quién, qué, cuándo, a qué proyecto.</p>
-<div class="scroll"><table>
-  <thead><tr><th>capital</th><th>entra por</th><th>sale como</th></tr></thead>
-  <tbody>
-    <tr><td>dinero</td><td>comité ejecutivo · metal</td><td>presupuesto de proyecto</td></tr>
-    <tr><td>gobernanza</td><td>comité ejecutivo</td><td>qué se hace y qué no</td></tr>
-    <tr><td>credenciales</td><td>comité asesor</td><td>aval, legitimidad, acceso</td></tr>
-    <tr><td>talento / gestión</td><td>comités · colaboradores</td><td>gente produciendo</td></tr>
-    <tr><td>red / lobby</td><td>todos</td><td>puertas abiertas, negociación con instituciones</td></tr>
-    <tr><td>materia prima</td><td>los proyectos</td><td>insumo para otros proyectos</td></tr>
-  </tbody>
-</table></div>
+<pre class="art w" style="--cols:78" aria-label="capital">+-------------------+-------------------------+------------------------------+
+| capital           | entra por               | sale como                    |
++===================+=========================+==============================+
+| dinero            | comite ejecutivo /      | presupuesto de proyecto      |
+|                   | metal                   |                              |
++-------------------+-------------------------+------------------------------+
+| gobernanza        | comite ejecutivo        | que se hace y que no         |
++-------------------+-------------------------+------------------------------+
+| credenciales      | comite asesor           | aval, legitimidad, acceso    |
++-------------------+-------------------------+------------------------------+
+| talento / gestion | comites / colaboradores | gente produciendo            |
++-------------------+-------------------------+------------------------------+
+| red / lobby       | todos                   | puertas abiertas,            |
+|                   |                         | negociacion con              |
+|                   |                         | instituciones                |
++-------------------+-------------------------+------------------------------+
+| materia prima     | los proyectos           | insumo para otros proyectos  |
++-------------------+-------------------------+------------------------------+</pre><pre class="art n" style="--cols:40" aria-label="capital">&gt; DINERO
+  entra    comite ejecutivo / metal
+  sale     presupuesto de proyecto
+
+&gt; GOBERNANZA
+  entra    comite ejecutivo
+  sale     que se hace y que no
+
+&gt; CREDENCIALES
+  entra    comite asesor
+  sale     aval, legitimidad, acceso
+
+&gt; TALENTO / GESTION
+  entra    comites / colaboradores
+  sale     gente produciendo
+
+&gt; RED / LOBBY
+  entra    todos
+  sale     puertas abiertas, negociacion
+           con instituciones
+
+&gt; MATERIA PRIMA
+  entra    los proyectos
+  sale     insumo para otros proyectos</pre>
 <p>La materia prima es el retorno: una traducción da tema a un debate; una retrospectiva deja archivo, relevamiento y red.</p>
 </section>
 
-<section>
-<h2 id="s03"><span class="n">&sect;03</span> // ROLES</h2>
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s03"><pre class="art num" style="--cols:28" aria-label="03">   :;iii;.      .;iiiii:.
+ !$$$$$$$$$;   I$$$$$$$$$l
+!$$$$!.$$$$$; i$$$$$.j$$$$!
+$$$$$;:!$$$$! j$$$$l::$$$$l:
+$$$$$;:!$$$$!: :::.,:l$$$$::
+$$$$$;:!$$$$!:    j$$$$$$j:
+$$$$$;:!$$$$!:    ,;i$$$$$l
+$$$$$;:!$$$$!:j$$$$! ;$$$$$:
+$$$$$;:!$$$$!:j$$$$l::$$$$$:
+!$$$$!.$$$$$;:;$$$$$.j$$$$l:
+ !$$$$$$$$$i:: j$$$$$$$$$l.:
+  ::;iii;,:::   :,;iiii:.::</pre><div class="st"><span class="inv">[ CREW ]</span><span class="sub">&sect;03 // roles</span><span class="tilde" aria-hidden="true">~~~~~~~~</span></div></header>
 <p>No son tipos de persona. Son <b>sombreros</b>: un mismo handle puede usar más de uno. Separarlos evita confundir aporte, responsabilidad y poder.</p>
-<figure class="fig"><div class="scroll"><pre class="d" style="--cols:50" aria-label="fig.03 // sombreros">  _______      _______      _______      _______
+<figure><pre class="art " style="--cols:50" aria-label="fig.03 // sombreros">  _______      _______      _______      _______
  |EJECUT.|    |ASESOR |    |CHAMP. |    | METAL |
 _|_______|_  _|_______|_  _|_______|_  _|_______|_
      |            |            |            |
      +------------+------+-----+------------+
                          |
                      @handle
-          un handle puede usar mas de uno</pre></div><figcaption>fig.03 // sombreros</figcaption></figure>
-<div class="scroll"><table>
-  <thead><tr><th>rol</th><th>aporta</th><th>gobierna</th><th>trabaja</th></tr></thead>
-  <tbody>
-    <tr><td>comité ejecutivo<br><span class="dim">founders</span></td><td>capital, talento, gestión</td><td>el fondo, el marco y qué proyectos se activan</td><td>gestión del conjunto</td></tr>
-    <tr><td>comité asesor</td><td>credenciales, conocimiento, red</td><td>lo que se le delegue en un proyecto</td><td>opcional, por proyecto</td></tr>
-    <tr><td>supporter / metal</td><td>capital, en monto voluntario</td><td>nada. tiene acceso temprano e información</td><td>no</td></tr>
-    <tr><td>champion</td><td>se hace cargo de un proyecto</td><td>las decisiones delegadas de ese proyecto</td><td>ejecuta y rinde cuentas</td></tr>
-  </tbody>
-</table></div>
-<div class="scroll"><pre class="block">Members:  05-12
+          un handle puede usar mas de uno</pre><figcaption>fig.03 // sombreros</figcaption></figure>
+<pre class="art w" style="--cols:76" aria-label="crew">+----------------+------------------+----------------------+---------------+
+| staff          | aporta           | gobierna             | trabaja       |
++================+==================+======================+===============+
+| comite         | capital,         | el fondo, el marco y | gestion del   |
+| ejecutivo      | talento, gestion | que proyectos se     | conjunto      |
+| (founders)     |                  | activan              |               |
++----------------+------------------+----------------------+---------------+
+| comite asesor  | credenciales,    | lo que se le delegue | opcional, por |
+|                | conocimiento,    | en un proyecto       | proyecto      |
+|                | red              |                      |               |
++----------------+------------------+----------------------+---------------+
+| supporter /    | capital, en      | nada. acceso         | no            |
+| metal          | monto voluntario | temprano e           |               |
+|                |                  | informacion          |               |
++----------------+------------------+----------------------+---------------+
+| champion       | se hace cargo de | las decisiones       | ejecuta y     |
+|                | un proyecto      | delegadas de ese     | rinde cuentas |
+|                |                  | proyecto             |               |
++----------------+------------------+----------------------+---------------+</pre><pre class="art n" style="--cols:42" aria-label="crew">&gt; COMITE EJECUTIVO (FOUNDERS)
+  aporta   capital, talento, gestion
+  gobierna el fondo, el marco y que
+           proyectos se activan
+  trabaja  gestion del conjunto
+
+&gt; COMITE ASESOR
+  aporta   credenciales, conocimiento, red
+  gobierna lo que se le delegue en un
+           proyecto
+  trabaja  opcional, por proyecto
+
+&gt; SUPPORTER / METAL
+  aporta   capital, en monto voluntario
+  gobierna nada. acceso temprano e
+           informacion
+  trabaja  no
+
+&gt; CHAMPION
+  aporta   se hace cargo de un proyecto
+  gobierna las decisiones delegadas de ese
+           proyecto
+  trabaja  ejecuta y rinde cuentas</pre>
+<pre class="art code" style="--cols:52" aria-label="members">Members:  05-12
 Rights:   equal for all / and injustice guaranteed
 Profit:   not profit, but capital accumulation
           for signal expansion and quality assurance
 Exit:     everything is optional.
-          anyone can leave immediately</pre></div>
+          anyone can leave immediately</pre>
 <p>Dos escalas de gobierno. <b>El todo:</b> fondo, prioridades, criterio, compromisos, auditoría. <b>Las partes:</b> cada proyecto define su alcance, equipo y decisiones, y puede tener su propia microgobernanza. Un proyecto con una parte de los recursos puede ser totalmente abierto a terceros. La apertura se declara, no se presume.</p>
 </section>
 
-<section>
-<h2 id="s04"><span class="n">&sect;04</span> // VERTICALES</h2>
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s04"><pre class="art num" style="--cols:28" aria-label="04">   :;iii;.        ,::::::.
+ !$$$$$$$$$;     ,d$$$$$$;
+!$$$$!.$$$$$;    d$$$$$$$;:
+$$$$$;:!$$$$!   i$$$$$$$$;:
+$$$$$;:!$$$$!: .$$$;$$$$$;:
+$$$$$;:!$$$$!: d$$P:$$$$$;:
+$$$$$;:!$$$$!:i$$$::$$$$$;:
+$$$$$;:!$$$$!.$$$$;;$$$$$!;
+$$$$$;:!$$$$!,$$$$$$$$$$$$$:
+!$$$$!.$$$$$;:iiiiii$$$$$l;:
+ !$$$$$$$$$i:: :::::Y$$$$;::
+  ::;iii;,:::       :::::.:</pre><div class="st"><span class="inv">[ NODES ]</span><span class="sub">&sect;04 // verticales</span><span class="tilde" aria-hidden="true">~~~~~~~~~</span></div></header>
 <p>Son una propuesta y pueden cambiar. Los recursos van a proyectos, no a verticales. Nada de lo que sigue está aprobado ni contactado: son candidatos para el primer RAISE-CYCLE.</p>
-<dl class="vert">
-  <div><dt>ORIGINAL</dt><dd>Contenido propio en tres largos. <b>Long-form:</b> traducción al español de un libro de Remilia (título y derechos por resolver). <b>Mid-form:</b> Substack con artículos y think pieces; parte pasa a impreso. <b>Short-form:</b> X / IG / TikTok, sin frecuencia comprometida.</dd></div>
-  <div><dt>NON-ORIGINAL</dt><dd>Programa editorial sobre material existente: textos canónicos traducidos o impresos en encuadernaciones guerrilla. Shadow library, ediciones perdidas, bootlegs, reediciones. <b>FERAL zine / booklets</b> con clásicos de teoría robot / machine / computer, distribuidos en puntos clave. A los members les llegan por correo <span class="dim">(puede que falle, no garantizamos nada)</span>.</dd></div>
-  <div><dt>MÚSICA</dt><dd>Live, stream, playlist y edición de música original con bandas y DJs, local y global. No todo requiere presupuesto: una playlist la toma quien quiera.</dd></div>
-  <div><dt>ARTE CONTEMP.</dt><dd>Candidato principal: <b>retrospectiva de arte digital latinoamericano 2020&ndash;2025</b>. Instituciones a explorar, sin contactar.</dd></div>
-  <div><dt>TECH LAB</dt><dd>Software y hardware como arte. CICFA · cyberdecks Cirujas Dropps · parlantes, sintetizadores y controladores MIDI · DWG Cyberweapons Office. Nunca código dañino funcional: se trabaja con la representación del arma, no con el arma.</dd></div>
-  <div><dt>PENSAMIENTO</dt><dd><b>Duelo Debates</b>, como formato o como plataforma donde retar a alguien a debatir. Abierto a otras formas de discusión. También entra un torneo de ajedrez.</dd></div>
-</dl>
+<pre class="art w" style="--cols:76" aria-label="node list">Node 1: ORIGINAL ....... contenido propio en tres largos: long / mid / short
+                         form
+Node 2: NON-ORIGINAL ... shadow library, zines, booklets, bootlegs,
+                         reediciones
+Node 3: MUSICA ......... live, stream, playlist y edicion de musica original
+Node 4: ARTE CONTEMP. .. retrospectiva de arte digital latinoamericano
+                         2020-2025
+Node 5: TECH LAB ....... software y hardware como arte
+Node 6: PENSAMIENTO .... Duelo Debates y otras formas de discusion</pre><pre class="art n" style="--cols:44" aria-label="node list">Node 1: ORIGINAL
+   contenido propio en tres largos: long /
+   mid / short form
+Node 2: NON-ORIGINAL
+   shadow library, zines, booklets,
+   bootlegs, reediciones
+Node 3: MUSICA
+   live, stream, playlist y edicion de
+   musica original
+Node 4: ARTE CONTEMP.
+   retrospectiva de arte digital
+   latinoamericano 2020-2025
+Node 5: TECH LAB
+   software y hardware como arte
+Node 6: PENSAMIENTO
+   Duelo Debates y otras formas de discusion</pre>
+<div class="nds"><div class="nd"><span class="nn">node 1</span><span class="nt">ORIGINAL</span><p><b>Long-form:</b> traducción al español de un libro de Remilia (título y derechos por resolver). <b>Mid-form:</b> Substack con artículos y think pieces; parte pasa a impreso. <b>Short-form:</b> X / IG / TikTok, sin frecuencia comprometida.</p></div><div class="nd"><span class="nn">node 2</span><span class="nt">NON-ORIGINAL</span><p>Tomar textos canónicos, traducirlos o simplemente imprimirlos en encuadernaciones guerrilla y distribuirlos. Shadow library, ediciones perdidas, bootlegs, reediciones, revamp, reshuffle. <b>FERAL zine / booklets:</b> clásicos de teoría robot / machine / computer, distribuidos en puntos clave. A los members les llegan por correo a su casa (puede que falle, no garantizamos nada).</p></div><div class="nd"><span class="nn">node 3</span><span class="nt">MÚSICA</span><p>Live, stream, playlist y edición de música original con bandas y DJs. Local y global. No todo requiere presupuesto: una playlist la toma quien quiera, sin frecuencia comprometida.</p></div><div class="nd"><span class="nn">node 4</span><span class="nt">ARTE CONTEMP.</span><p>Candidato principal: <b>retrospectiva de arte digital latinoamericano 2020&ndash;2025</b>. Instituciones a explorar, sin contactar.</p></div><div class="nd"><span class="nn">node 5</span><span class="nt">TECH LAB</span><p>Software y hardware como arte. Referencia: MSCHF y la compu con virus. CICFA / cyberdecks Cirujas Dropps / parlantes, sintetizadores y controladores MIDI / DWG Cyberweapons Office. <b>Nunca código dañino funcional: se trabaja con la representación del arma, no con el arma.</b></p></div><div class="nd"><span class="nn">node 6</span><span class="nt">PENSAMIENTO</span><p><b>Duelo Debates</b>, como formato o como plataforma donde retar a alguien a debatir. Abierto a otras formas de discusión. También entra un torneo de ajedrez.</p></div></div>
 </section>
 
-<section>
-<h2 id="s05"><span class="n">&sect;05</span> // CRITERIO</h2>
-<p>El comité no pregunta si algo es interesante: casi todo lo es. Pregunta qué cambia si FERAL pone recursos ahí.</p>
-<div class="cols">
-  <div>
-    <div class="k">ENTRA SI cumple al menos uno, y se puede decir cuál</div>
-    <ul class="mk">
-      <li><b>[1]</b> altera un marco: se puede nombrar qué se puede pensar o percibir que antes no.</li>
-      <li><b>[2]</b> hace algo con su medio: en otro formato sería otra cosa.</li>
-      <li><b>[3]</b> se pierde si no circula: se puede nombrar la escena, el archivo o el debate que queda afuera.</li>
-    </ul>
-    <div class="k">Y ADEMÁS cumple todos</div>
-    <ul class="mk">
-      <li><b>[+]</b> FERAL cambia sus condiciones.</li>
-      <li><b>[+]</b> tiene champion: una persona responde por él.</li>
-      <li><b>[+]</b> entra en los recursos que hay, sin depender de lo que podría aparecer.</li>
-    </ul>
-  </div>
-  <div>
-    <div class="k">NO ENTRA SI</div>
-    <ul class="mk">
-      <li><b>[-]</b> el único argumento es que nos gusta.</li>
-      <li><b>[-]</b> usa referencias culturales como decoración.</li>
-      <li><b>[-]</b> existe para sostener una frecuencia de publicación.</li>
-      <li><b>[-]</b> necesita un sponsor que fije su agenda.</li>
-      <li><b>[-]</b> cruza de lo simbólico al daño real.</li>
-    </ul>
-  </div>
-</div>
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s05"><pre class="art num" style="--cols:28" aria-label="05">   :;iii;.    .:::::::::::
+ !$$$$$$$$$;  ;$$$$$$$$$$b
+!$$$$!.$$$$$, ;$$$$!;;;;;;:
+$$$$$;:$$$$$i i$$$$i,iii;:
+$$$$$;:$$$$$j:i$$$$$$$$$$b;
+$$$$$;:$$$$$j:j$$$$P.j$$$$b
+$$$$$;:$$$$$j: :::::::$$$$$:
+$$$$$;:$$$$$j:;!!!!i :$$$$$:
+$$$$$;:$$$$$i:j$$$$l::$$$$$:
+!$$$$!.$$$$$:::$$$$$,j$$$$P:
+ !$$$$$$$$$;:  i$$$$$$$$$I.:
+  ::;iii;,:::   :,;iiii:.::</pre><div class="st"><span class="inv">[ REQUIREMENTS ]</span><span class="sub">&sect;05 // criterio de ingreso</span><span class="tilde" aria-hidden="true">~~~~~~~~~~~~~~~~</span></div></header>
+<p>El comité no pregunta si algo es interesante: casi todo lo es. <b>Pregunta qué cambia si FERAL pone recursos ahí.</b></p>
+<pre class="art w" style="--cols:75" aria-label="requirements">Requiere al menos uno, y se puede decir cual:
+  [ ] altera un marco: se puede nombrar que se puede pensar o percibir que
+      antes no.
+  [ ] hace algo con su medio: en otro formato seria otra cosa.
+  [ ] se pierde si no circula: se puede nombrar la escena, el archivo o el
+      debate que queda afuera.
+
+Requiere todos:
+  [x] FERAL cambia sus condiciones: hay una intervencion concreta que hace
+      posible lo que no lo era.
+  [x] tiene champion: una persona responde por el.
+  [x] entra en los recursos: alcanza con lo que hay, sin depender de lo que
+      podria aparecer.
+
+No soportado:
+  [-] el unico argumento es que nos gusta.
+  [-] usa referencias culturales como decoracion.
+  [-] existe para sostener una frecuencia de publicacion.
+  [-] necesita un sponsor que fije su agenda.
+  [-] cruza de lo simbolico al dano real.</pre><pre class="art n" style="--cols:44" aria-label="requirements">Requiere al menos uno, y se puede decir
+cual:
+  [ ] altera un marco: se puede nombrar que
+      se puede pensar o percibir que antes
+      no.
+  [ ] hace algo con su medio: en otro
+      formato seria otra cosa.
+  [ ] se pierde si no circula: se puede
+      nombrar la escena, el archivo o el
+      debate que queda afuera.
+
+Requiere todos:
+  [x] FERAL cambia sus condiciones: hay una
+      intervencion concreta que hace posible
+      lo que no lo era.
+  [x] tiene champion: una persona responde
+      por el.
+  [x] entra en los recursos: alcanza con lo
+      que hay, sin depender de lo que podria
+      aparecer.
+
+No soportado:
+  [-] el unico argumento es que nos gusta.
+  [-] usa referencias culturales como
+      decoracion.
+  [-] existe para sostener una frecuencia de
+      publicacion.
+  [-] necesita un sponsor que fije su
+      agenda.
+  [-] cruza de lo simbolico al dano real.</pre>
 </section>
 
-<section>
-<h2 id="s06"><span class="n">&sect;06</span> // RAISE-CYCLE</h2>
-<p>El RAISE-CYCLE responde a la demanda de presupuesto. Cada proyecto presenta una ficha: qué es, quién lo lleva, qué pide (dinero, gestión, red, credenciales), qué devuelve y qué riesgos tiene. <b>El comité ejecutivo decide qué se hace y qué no. Si se empata, no se hace.</b> La participación es siempre opcional.</p>
-<figure class="fig"><div class="scroll"><pre class="d" style="--cols:56" aria-label="fig.06 // de idea a materia prima">  IDEA
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s06"><pre class="art num" style="--cols:28" aria-label="06">   :;iii;.       ,;iiii:
+ !$$$$$$$$b:   i$$$$$$$$$l.
+!$$$$j.$$$$b, ;$$$$$.i$$$$I
+$$$$$;:$$$$$i !$$$$!:.jjjjj:
+$$$$$; $$$$$j:!$$$$lilIl!:::
+$$$$$; $$$$$j:!$$$$$$$$$$$!
+$$$$$; $$$$$j:!$$$$l:;$$$$$:
+$$$$$; $$$$$j:!$$$$!::$$$$$:
+$$$$$; $$$$$i:!$$$$!::$$$$$:
+!$$$$j,$$$$$::;$$$$$.j$$$$P:
+ !$$$$$$$$$;:  i$$$$$$$$$l.:
+  ::;iii;,:::   :,;iiii:.::</pre><div class="st"><span class="inv">[ INSTALL NOTES ]</span><span class="sub">&sect;06 // raise-cycle</span><span class="tilde" aria-hidden="true">~~~~~~~~~~~~~~~~~</span></div></header>
+<p>El RAISE-CYCLE responde a la demanda de presupuesto. La participación es siempre opcional.</p>
+<pre class="art w" style="--cols:74" aria-label="install notes">1. Tener una idea y alguien que se haga cargo: el champion.
+2. Armar la ficha: que es, quien lo lleva, que pide (dinero, gestion, red,
+   credenciales), que devuelve y que riesgos tiene.
+3. Presentarla en el RAISE-CYCLE.
+4. El comite ejecutivo decide que se hace y que no. Si se empata, no se
+   hace.
+5. Ejecutar hasta cumplir el alcance, o archivar.
+6. Lo entregado vuelve a la maquina como materia prima.</pre><pre class="art n" style="--cols:44" aria-label="install notes">1. Tener una idea y alguien que se haga
+   cargo: el champion.
+2. Armar la ficha: que es, quien lo lleva,
+   que pide (dinero, gestion, red,
+   credenciales), que devuelve y que riesgos
+   tiene.
+3. Presentarla en el RAISE-CYCLE.
+4. El comite ejecutivo decide que se hace y
+   que no. Si se empata, no se hace.
+5. Ejecutar hasta cumplir el alcance, o
+   archivar.
+6. Lo entregado vuelve a la maquina como
+   materia prima.</pre>
+<figure><pre class="art " style="--cols:56" aria-label="fig.06 // de idea a materia prima">  IDEA
     |   tiene champion
     v
   FICHA &lt;----------------------------------------------+
@@ -283,35 +564,62 @@ Exit:     everything is optional.
   ENTREGADO
     |
     v
-  MATERIA PRIMA --&gt; vuelve a la maquina</pre></div><figcaption>fig.06 // de idea a materia prima</figcaption></figure>
+  MATERIA PRIMA --&gt; vuelve a la maquina</pre><figcaption>fig.06 // de idea a materia prima</figcaption></figure>
 <p>Un archivo de posibilidades no es un fracaso. Es lo que permite tener un universo amplio sin que cada interés se vuelva una obligación pendiente.</p>
 </section>
 
-<section>
-<h2 id="s07"><span class="n">&sect;07</span> // CYCLE01</h2>
-<div class="cols">
-  <div>
-    <div class="k">RECURSOS</div>
-    <ul class="mk">
-      <li><b>~</b> objetivo inicial: ~15k USD entre founders y metal. sin confirmar.</li>
-      <li><b>~</b> primero el presupuesto: el fondo define el campo de lo posible y después se arma el scope of work.</li>
-      <li><b>~</b> terminar con plata no es un error. no es un presupuesto a ejecutar.</li>
-      <li><b>~</b> fondos por tramos (en diseño): la plata se libera si se cumple lo comprometido y, si no, se devuelve. la regla forma parte de la obra.</li>
-    </ul>
-  </div>
-  <div>
-    <div class="k">ESCALA: lo que puede hacer un fondo chico</div>
-    <ul class="mk">
-      <li><b>&gt;</b> un microgrant para que alguien escriba un paper.</li>
-      <li><b>&gt;</b> una exhibición con screenshots de un artista con 150 seguidores.</li>
-      <li><b>&gt;</b> traer a un escritor de afuera para que hable en un bar.</li>
-      <li><b>&gt;</b> llevar una banda de acá a tocar en otra ciudad.</li>
-      <li><b>&gt;</b> imprimir un zine en una esquina de Dimes Square.</li>
-      <li><b>&gt;</b> una tirada de 10 parlantes que se agota o se funde.</li>
-    </ul>
-  </div>
-</div>
-<figure class="fig"><div class="scroll"><pre class="d" style="--cols:62" aria-label="fig.07a // calendario propuesto">                   2026  2027
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s07"><pre class="art num" style="--cols:25" aria-label="07">   :;iii;.    ::::::::::
+ !$$$$$$$$$; ,d$$$$$$$$b
+!$$$$!.$$$$$;.jjjj!$$$$$:
+$$$$$;:!$$$$!  :::;$$$$l:
+$$$$$;:!$$$$!:    $$$$$::
+$$$$$;:!$$$$!:   :$$$$$:
+$$$$$;:!$$$$!:   l$$$$i:
+$$$$$;:!$$$$!:  .$$$$$::
+$$$$$;:!$$$$!:  !$$$$!:
+!$$$$!.$$$$$;:  $$$$$::
+ !$$$$$$$$$i:: i$$$$P:
+  ::;iii;,:::  ,::::,:</pre><div class="st"><span class="inv">[ RELEASE SCHEDULE ]</span><span class="sub">&sect;07 // cycle01</span><span class="tilde" aria-hidden="true">~~~~~~~~~~~~~~~~~~~~</span></div></header>
+<pre class="art w" style="--cols:76" aria-label="resources">+-[ RESOURCES ]------------------------------------------------------------+
+| objetivo inicial: ~15k USD entre founders y metal. sin confirmar.        |
+| primero el presupuesto: el fondo define el campo de lo posible y recien  |
+| despues se arma el scope of work.                                        |
+| terminar con plata no es un error. no es un presupuesto a ejecutar.      |
+| fondos por tramos (en diseno): la plata se libera si se cumple lo        |
+| comprometido y, si no, se devuelve. la regla forma parte de la obra.     |
++--------------------------------------------------------------------------+</pre><pre class="art n" style="--cols:44" aria-label="resources">+-[ RESOURCES ]----------------------------+
+| objetivo inicial: ~15k USD entre         |
+| founders y metal. sin confirmar.         |
+| primero el presupuesto: el fondo define  |
+| el campo de lo posible y recien despues  |
+| se arma el scope of work.                |
+| terminar con plata no es un error. no es |
+| un presupuesto a ejecutar.               |
+| fondos por tramos (en diseno): la plata  |
+| se libera si se cumple lo comprometido   |
+| y, si no, se devuelve. la regla forma    |
+| parte de la obra.                        |
++------------------------------------------+</pre>
+<div class="k">lo que puede hacer un fondo chico, usado con criterio</div>
+<pre class="art w" style="--cols:66" aria-label="escala">&gt; un microgrant para que alguien escriba un paper.
+&gt; una exhibicion con screenshots de un artista con 150 seguidores.
+&gt; traer a un escritor de afuera para que hable en un bar.
+&gt; llevar una banda de aca a tocar en otra ciudad.
+&gt; imprimir un zine en una esquina de Dimes Square.
+&gt; una tirada de 10 parlantes que se agota o se funde.</pre><pre class="art n" style="--cols:43" aria-label="escala">&gt; un microgrant para que alguien escriba un
+  paper.
+&gt; una exhibicion con screenshots de un
+  artista con 150 seguidores.
+&gt; traer a un escritor de afuera para que
+  hable en un bar.
+&gt; llevar una banda de aca a tocar en otra
+  ciudad.
+&gt; imprimir un zine en una esquina de Dimes
+  Square.
+&gt; una tirada de 10 parlantes que se agota o
+  se funde.</pre>
+<figure><pre class="art " style="--cols:62" aria-label="fig.07a // calendario propuesto">                   2026  2027
                    N  D  E  F  M  A  M  J  J  A  S  O  N  D
                    ...........................................
 reglas minimas     ===
@@ -323,28 +631,38 @@ T3 materia prima                           ==========
 T4 cierre + RC01                                    ==========
                    ...........................................
                          ^                                   ^
-                         31.12.26 arranque     cierre 31.12.27</pre></div><figcaption>fig.07a // calendario propuesto</figcaption></figure>
+                         31.12.26 arranque     cierre 31.12.27</pre><figcaption>fig.07a // calendario propuesto</figcaption></figure>
 <p>No hace falta llegar a diciembre con cada mes definido, ni cubrir todas las verticales. Un ciclo con dos o tres activas sigue siendo un ciclo.</p>
-<div class="k">QUÉ SE MIDE · no se optimiza por audiencia</div>
-<ul class="mk">
-  <li><b>01</b> foro de pares: un diálogo real con quienes comparten un conjunto específico de intereses. Son pocas personas en el mundo.</li>
-  <li><b>02</b> red: contacto con las instituciones y los pares que nos importan, acá y afuera.</li>
-  <li><b>03</b> lo hecho contra lo comprometido: auditoría propia a fin de ciclo.</li>
-  <li><b>04</b> lo aprendido del sistema: qué regla se rompió primero.</li>
-</ul>
-<figure class="fig"><div class="scroll"><pre class="d" style="--cols:62" aria-label="fig.07b // estados de salida">CYCLE01 --&gt; AUDIT --+--&gt; CYCLE02  entran nuevos, se bajan
+<div class="k">qué se mide // no se optimiza por audiencia</div>
+<ol class="meas">
+  <li><b>Foro de pares.</b> Un diálogo real con quienes comparten un conjunto específico de intereses. Son pocas personas en el mundo. No es algo masivo ni busca serlo.</li>
+  <li><b>Red.</b> Contacto con las instituciones y los pares que nos importan, acá y afuera.</li>
+  <li><b>Lo hecho contra lo comprometido.</b> Auditoría propia a fin de ciclo.</li>
+  <li><b>Lo aprendido del sistema.</b> Qué regla se rompió primero.</li>
+</ol>
+<figure><pre class="art " style="--cols:62" aria-label="fig.07b // estados de salida">CYCLE01 --&gt; AUDIT --+--&gt; CYCLE02  entran nuevos, se bajan
                     |             otros, cambian las reglas
                     |
                     +--&gt; MUTATE   otra forma, otras verticales
                     |
-                    +--&gt; CLOSE    y queda el archivo</pre></div><figcaption>fig.07b // estados de salida</figcaption></figure>
-<p>Resultado óptimo: que salga algo que este documento no podía prever.</p>
+                    +--&gt; CLOSE    y queda el archivo</pre><figcaption>fig.07b // estados de salida</figcaption></figure>
 </section>
 
-<section>
-<h2 id="s08"><span class="n">&sect;08</span> // CAPA NO HUMANA</h2>
-<p>La parte no humana de la máquina todavía está en construcción. Hipótesis de trabajo: un repo como engine operacional, agentes dentro del dispositivo y fondos legibles.</p>
-<figure class="fig"><div class="scroll"><pre class="d" style="--cols:64" aria-label="fig.08 // capa no humana">[ miembro ]     [ miembro ]     [ miembro ]
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<section><header class="sh" id="s08"><pre class="art num" style="--cols:28" aria-label="08">   :;iii;.       ,;iiii:.
+ !$$$$$$$$$;   i$$$$$$$$$l
+!$$$$!.$$$$$, :$$$$$.!$$$$j
+$$$$$;:$$$$$i ;$$$$$:i$$$$l:
+$$$$$;:$$$$$j: Y$$$$;I$$$$::
+$$$$$;:$$$$$j: ;$$$$$$$$$i:
+$$$$$;:$$$$$j::d$$$$iI$$$$!
+$$$$$;:$$$$$j:j$$$$l:;$$$$$:
+$$$$$;:$$$$$i:!$$$$l:;$$$$$:
+!$$$$!.$$$$$::;$$$$$.j$$$$l:
+ !$$$$$$$$$;:  j$$$$$$$$$I.:
+  ::;iii;,:::   ::;iiii:.::</pre><div class="st"><span class="inv">[ TECH NOTES ]</span><span class="sub">&sect;08 // capa no humana</span><span class="tilde" aria-hidden="true">~~~~~~~~~~~~~~</span></div></header>
+<p>La parte no humana de la máquina todavía está en construcción. Hipótesis de trabajo:</p>
+<figure><pre class="art " style="--cols:64" aria-label="fig.08 // capa no humana">[ miembro ]     [ miembro ]     [ miembro ]
      | local         |               |
      +---------------+---------------+
                      |  sync
@@ -361,12 +679,51 @@ T4 cierre + RC01                                    ==========
 
           +-----------------------+  fondos legibles:
           |        MULTISIG       |  entra / se asigna / queda
-          +-----------------------+  consultable desde la fuente</pre></div><figcaption>fig.08 // capa no humana</figcaption></figure>
-<p>Cada miembro trabaja local contra una carpeta que se sincroniza con un repositorio común; documentos, decisiones y CRM viven ahí. Los agentes leen el estado del sistema, ordenan, generan reportes y ejecutan tareas. No votan. Los fondos viven en una multisig: lo que entra, se asigna y queda se puede consultar en todo momento, directo desde la fuente.</p>
+          +-----------------------+  consultable desde la fuente</pre><figcaption>fig.08 // capa no humana</figcaption></figure>
+<p><b>Un repo como engine operacional.</b> Cada miembro trabaja local contra una carpeta que se sincroniza con un repositorio común. Documentos, decisiones y CRM viven ahí. <b>Agentes dentro del dispositivo.</b> Leen el estado del sistema, ordenan, generan reportes y ejecutan tareas. No votan. <b>Fondos legibles.</b> Los fondos viven en una multisig: lo que entra, se asigna y queda se puede consultar en todo momento, directo desde la fuente.</p>
 </section>
 
+<div class="sep bleedx" aria-hidden="true"><pre class="sepp">.,:;ij!lIS$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$SIl!ji;:,.</pre></div>
+<div class="bleed"><pre class="art date" style="--cols:105" aria-label="31.12.2026">  :;iiii:.        :::           :::    :iiii:.          ,;iii;.      :iiii::      :iiii:       :iiii;.
+;$$$$$$$$$l    :!$$$b        :j$$$b. ;d$$$$$$$l.      ;d$$$$$$$b,  !$$$$$$$$I.  j$$$$$$$$l  .l$$$$$$$$b,
+$$$$$.:$$$$i:d$$$$$$$:    ,d$$$$$$$. d$$$,:$$$$b      d$$$;:l$$$b ;$$$$;:$$$$b :$$$$::$$$$l l$$$$.:Y$$$b
+!llll:,$$$$i::;j$$$$$:     :;i$$$$$.,Y$$P:.$$$$P:    ,Y$$P, $$$$$:!$$$$::$$$$$:i$$$P:,$$$$l:$$$$$: ;;::,:
+ :::!!$$$$j::   $$$$$:        $$$$$.  :::.d$$$P::      ::::I$$$$i:!$$$$: $$$$$: ::::,d$$$P,:$$$$$l$$$$l,
+   .$$$$$$$,    $$$$$:        $$$$$.    ,d$$$P::         .d$$$$i::!$$$$: $$$$$:    :d$$$P,: $$$$$ii$$$$b
+iiiii:;$$$$!    $$$$$:        $$$$$.   ;$$$$P,:         :d$$$P::: !$$$$: $$$$$:   i$$$$I.:  $$$$$::$$$$$:
+$$$$$:,$$$$l:   $$$$$:        $$$$$.  j$$$$!::         i$$$$l::   !$$$$: $$$$$:  l$$$$j::   $$$$$: $$$$$:
+I$$$$::$$$$j:   $$$$$:;!!!.   $$$$$. !$$$$l::::. !!!; !$$$$I::::, i$$$$; $$$$P:.d$$$$!::::. l$$$$. $$$$P:
+,Y$$$$$$$$l::   Y$$$P:j$$P.   Y$$$P.,Y$$$$$$$$$j Y$$!,Y$$$$$$$$$!  j$$$$$$$$P,:i$$$$$$$$$$; .l$$$$$$$$P,:
+  .;iiii:.::    ::::::,::::   :::::: ::::::::::.::::,:::::::::::,:  ::iiii;.:: .::::::::::.:  ::iiii;.::</pre></div>
+<p class="datecap">CYCLE01 // arranque</p>
+<footer class="end">
+<pre class="art endcage" style="--cols:54" aria-label="jaula abierta"> | | | | | | | | |
+ | | | | | | | | |
+ | | | | | | |  \ \
+ | | | | | | |   \ \  .   .   .   .   .   .   .   .  &gt;
+ | | | | | | |   / /
+ | | | | | | |  / /
+ | | | | | | | | |
+ | | | | | | | | |</pre>
+<p class="opt">Resultado óptimo: que salga algo que este documento no podía prever.</p>
+<p class="cr">&mdash;&mdash; FERAL Machine &nbsp;/&nbsp; CYCLE01 &nbsp;/&nbsp; 2026&ndash;2027 &mdash;&mdash;</p>
+<p class="eof">EOF<span class="cur" aria-hidden="true"></span></p>
+</footer>
 </main>
 
-<footer class="eof">EOF — FERAL · CYCLE01<span class="cur" aria-hidden="true"></span></footer>
+<div class="modeline" aria-hidden="true"><span>-UUU:---</span><span>F1</span><b>FERAL.NFO</b><span id="ml-pos">Top</span><span id="ml-ln">L1</span><span>(Text)</span><span class="fill"></span></div>
+<script>
+(function(){
+  var pos=document.getElementById('ml-pos'), ln=document.getElementById('ml-ln'), lh=24, raf=0;
+  function upd(){
+    raf=0;
+    var y=window.scrollY||0, max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+    pos.textContent = y<8 ? 'Top' : (y>=max-8 ? 'Bot' : Math.round(y/max*100)+'%');
+    ln.textContent = 'L'+(Math.floor(y/lh)+1);
+  }
+  window.addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(upd); },{passive:true});
+  upd();
+})();
+</script>
 </body>
 </html>
